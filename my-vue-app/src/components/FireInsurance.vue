@@ -274,18 +274,21 @@
               </div>
               <br /><br />
             </div>
-          <button type="submit">Submit</button>
+          <button @click="submitForm">Submit</button>
+
   </form>
   </div>
 </template>
 
 <script>
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
-// Initialize Supabase
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient('https://yebzeglvqfxiiwzijmmr.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InllYnplZ2x2cWZ4aWl3emlqbW1yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAyMTM3NjEsImV4cCI6MjA1NTc4OTc2MX0.6MQl_8jO7EyCxewwvV4RancZ4cX_B5IGEfcPbjF8a5E');
+
+console.log("Supabase Initialized:", supabase);
+
 export default {
   data() {
     return {
@@ -440,130 +443,136 @@ export default {
   console.log("Submitting form...");
 
   try {
-    // Step 1: Insert client details into 'clients' table
+    this.isLoading = true;
+    this.errorMessage = "";
+    this.successMessage = "";
+
+    // Step 1: Insert into `clients` table
     const { data: clientData, error: clientError } = await supabase
       .from("clients")
       .insert([
         {
-          LastName: this.form.LastName,
-          GivenName: this.form.GivenName,
-          MiddleName: this.form.MiddleName,
-          DateOfBirth: this.form.DateOfBirth,
-          InterestOnProperty: this.form.InterestOnProperty,
-          MobileNum: this.form.MobileNum,
-          EmailAdd: this.form.EmailAdd,
-          MailingAdd: this.form.MailingAdd,
-          TelResNum: this.form.TelResNum,
-          TelOffNum: this.form.TelOffNum
-        }
+          LastName: this.form.last_name,
+          GivenName: this.form.given_name,
+          MiddleName: this.form.middle_name,
+          DateOfBirth: this.form.dob,
+          InterestOnProperty: this.form.interest_on_property,
+          MobileNum: this.form.phone_num,
+          EmailAdd: this.form.email_add,
+          MailingAdd: this.form.mailing_address,
+          TelResNum: this.form.tel_num_res || null,
+          TelOffNum: this.form.tel_num_off || null,
+        },
       ])
-      .select(); // Retrieve inserted row
+      .select();
 
     if (clientError) throw clientError;
     console.log("Inserted client:", clientData);
 
-    // Get ClientID from the inserted client
     const ClientID = clientData[0]?.ClientID;
     if (!ClientID) throw new Error("ClientID not found!");
 
-    // Step 2: Insert property information into 'property_information' table
+    // Step 2: Insert into `property_information`
     const { data: propertyData, error: propertyError } = await supabase
       .from("property_information")
       .insert([
         {
-          ClientID: ClientID,
-          PropertyAddress: this.form.PropertyAddress,
-          PropertyCountry: "Philippines", // Fixed value as per your constraints
-          PropertyRegion: this.form.PropertyRegion,
-          PropertyProvince: this.form.PropertyProvince,
-          PropertyCity: this.form.PropertyCity,
-          PropertyBarangay: this.form.PropertyBarangay,
-          PropertyVillageName: this.form.PropertyVillageName,
-          PropertyCondoName: this.form.PropertyCondoName
-        }
+          ClientID,
+          PropertyAddress: this.form.address,
+          PropertyCountry: "Philippines",
+          PropertyRegion: this.form.region,
+          PropertyProvince: this.form.province,
+          PropertyCity: this.form.city,
+          PropertyBarangay: this.form.barangay,
+          PropertyVillageName: this.form.village_name || null,
+          PropertyCondoName: this.form.condo_name || null,
+        },
       ])
       .select();
 
     if (propertyError) throw propertyError;
     console.log("Inserted property:", propertyData);
 
-    // Get PropertyID from the inserted property
     const PropertyID = propertyData[0]?.PropertyID;
     if (!PropertyID) throw new Error("PropertyID not found!");
 
-    // Step 3: Insert covered properties into 'covered_properties' table (if applicable)
-    const { error: coveredPropertiesError } = await supabase
+    // Step 3: Insert into `covered_properties`
+    const { error: coveredError } = await supabase
       .from("covered_properties")
       .insert([
         {
-          PropertyID: PropertyID,
-          BuildingImprovements: this.form.BuildingImprovements ?? 0, // Ensure default values
-          HouseholdContents: this.form.HouseholdContents ?? 0,
-          SwimmingPool: this.form.SwimmingPool ?? 0,
-          Gazebo: this.form.Gazebo ?? 0,
-          WaterTank: this.form.WaterTank ?? 0,
-          PumpHouse: this.form.PumpHouse ?? 0,
-          DirtyKitchen: this.form.DirtyKitchen ?? 0,
-          ConcreteFence: this.form.ConcreteFence ?? 0
-        }
+          PropertyID,
+          BuildingImprovements: this.form.building_improvements ?? 0,
+          HouseholdContents: this.form.household_contents ?? 0,
+          SwimmingPool: this.form.swimming_pool ?? 0,
+          Gazebo: this.form.gazebo ?? 0,
+          WaterTank: this.form.water_tank ?? 0,
+          PumpHouse: this.form.pump_house ?? 0,
+          DirtyKitchen: this.form.dirty_kitchen ?? 0,
+          ConcreteFence: this.form.concrete_fence ?? 0,
+        },
       ]);
 
-    if (coveredPropertiesError) throw coveredPropertiesError;
+    if (coveredError) throw coveredError;
     console.log("Inserted covered properties");
 
-    // Step 4: Insert property description into 'property_description' table
+    // Step 4: Insert into `property_description`
     const { error: descriptionError } = await supabase
       .from("property_description")
       .insert([
         {
-          PropertyID: PropertyID,
-          Storey: this.form.Storey,
-          YearBuilt: this.form.YearBuilt,
-          FloorArea: this.form.FloorArea,
-          Roofing: this.form.Roofing,
-          RoofingOther: this.form.RoofingOther,
-          Occupancy: this.form.Occupancy,
-          OccupancyOther: this.form.OccupancyOther,
-          Tenants: this.form.Tenants,
-          TypeOfConstruction: this.form.TypeOfConstruction,
-          BoundaryFront: this.form.BoundaryFront,
-          BoundaryRight: this.form.BoundaryRight,
-          BoundaryLeft: this.form.BoundaryLeft,
-          BoundaryRear: this.form.BoundaryRear,
-          LocationCongestedArea: this.form.LocationCongestedArea,
-          LocationCongestedAreaDetails: this.form.LocationCongestedAreaDetails,
-          LocationExplosives: this.form.LocationExplosives,
-          LocationExplosivesDetails: this.form.LocationExplosivesDetails,
-          LocationFloodProne: this.form.LocationFloodProne,
-          LocationFloodProneDetails: this.form.LocationFloodProneDetails,
-          FireLoss: this.form.FireLoss,
-          FireLossDate: this.form.FireLossDate || null, // Nullable field
-          PolicyCancelled: this.form.PolicyCancelled,
-          PolicyCancelledCompany: this.form.PolicyCancelledCompany || null,
-          PolicyCancelledDate: this.form.PolicyCancelledDate || null,
-          RiskDeclined: this.form.RiskDeclined,
-          RiskDeclinedCompany: this.form.RiskDeclinedCompany || null,
-          RiskDeclinedDate: this.form.RiskDeclinedDate || null
-        }
+          PropertyID,
+          Storey: this.form.noOfStorey,
+          YearBuilt: this.form.yearBuilt,
+          FloorArea: this.form.floorArea,
+          Roofing: this.form.roofing,
+          RoofingOther: this.form.roofingOther || null,
+          Occupancy: this.form.occupancy,
+          OccupancyOther: this.form.occupancy_other || null,
+          Tenants: this.form.tenants,
+          TypeOfConstruction: this.form.typeOfConstruction,
+          BoundaryFront: this.form.boundaryFront,
+          BoundaryRight: this.form.boundaryRight,
+          BoundaryLeft: this.form.boundaryLeft,
+          BoundaryRear: this.form.boundaryRear,
+          LocationCongestedArea: this.form.loc_congested_area,
+          LocationCongestedAreaDetails: this.form.loc_congested_area_details || null,
+          LocationExplosives: this.form.loc_explosive,
+          LocationExplosivesDetails: this.form.loc_explosive_details || null,
+          LocationFloodProne: this.form.loc_flood_prone,
+          LocationFloodProneDetails: this.form.loc_flood_prone_details || null,
+          FireLoss: this.form.fire_loss,
+          FireLossDate: this.form.fire_loss_date || null,
+          PolicyCancelled: this.form.policy_cancelled,
+          PolicyCancelledCompany: this.form.policy_cancelled_company || null,
+          PolicyCancelledDate: this.form.policy_cancelled_date || null,
+          RiskDeclined: this.form.risk_declined,
+          RiskDeclinedCompany: this.form.risk_declined_company || null,
+          RiskDeclinedDate: this.form.risk_declined_date || null,
+        },
       ]);
 
     if (descriptionError) throw descriptionError;
     console.log("Inserted property description");
 
-    // Step 5: Insert selected package into 'packages' table (if applicable)
-    if (this.form.PackageName) {
+    // Step 5: Insert into `packages` if selected
+    if (this.selectedPackage) {
       const { error: packageError } = await supabase
         .from("packages")
-        .insert([{ PackageName: this.form.PackageName }]);
+        .insert([{ PackageName: this.selectedPackage }]);
 
       if (packageError) throw packageError;
-      console.log("Inserted package selection");
+      console.log("Inserted package selection:", this.selectedPackage);
     }
 
-    alert("Form submitted successfully!");
+    this.successMessage = "Form submitted successfully!";
+    console.log("Form submitted successfully!");
+
   } catch (error) {
-    console.error("Error:", error.message);
-    alert("Error submitting form: " + error.message);
+    console.error("Error submitting form:", error.message);
+    this.errorMessage = "Error: " + error.message;
+  } finally {
+    this.isLoading = false;
   }
 },
     // ... other watchers
