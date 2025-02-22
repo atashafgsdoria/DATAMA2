@@ -41,7 +41,6 @@
                   <input type="number" id="tel_num_off" v-model="form.tel_num_off" placeholder="0288529232" pattern="[0-9]{0,10}" />
                 </div>
               </div>
-              <button type="submit">Submit</button>
           </div>
 
           <div class="section">
@@ -50,9 +49,6 @@
                 <div class="column">
                   <label for="address">House No./Street/Purok/Subdivision:</label>
                   <input type="text" id="address" v-model="form.address" placeholder="3 Humabon, Makati, 1232 Kalakhang Maynila" required />
-          
-                  <label for="country">Country:</label>
-                  <input type="text" id="country" v-model="form.country" required @input="validateCountry" />
           
                   <label for="region">Region:</label>
                   <input type="text" id="region" v-model="form.region" placeholder="National Capital Region (NCR)" required />
@@ -284,6 +280,12 @@
 </template>
 
 <script>
+import { createClient } from '@supabase/supabase-js';
+
+// Initialize Supabase
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabase = createClient('https://yebzeglvqfxiiwzijmmr.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InllYnplZ2x2cWZ4aWl3emlqbW1yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAyMTM3NjEsImV4cCI6MjA1NTc4OTc2MX0.6MQl_8jO7EyCxewwvV4RancZ4cX_B5IGEfcPbjF8a5E');
 export default {
   data() {
     return {
@@ -299,7 +301,6 @@ export default {
         tel_num_res: "",
         tel_num_off: "",
         address: "",
-        country: "",
         region: "",
         province: "",
         city: "",
@@ -380,7 +381,6 @@ export default {
         off: "",
       },
 
-      country: "",
       date: "",
       currentYear: new Date().getFullYear(),
 
@@ -418,12 +418,10 @@ export default {
         }
       }
     },
-    validateCountry() {
-      if (this.country !== "Philippines") {
-        alert('Please enter "Philippines"');
-        this.country = ""; //Clear the input if not Philippines
-        this.form.country = "";
-      }
+    handleSubmit(event) {  // Add 'event' parameter if you need it
+      event.preventDefault(); // Prevent default form submission (important!)
+      // ... your form submission logic here ...
+      console.log("Form submitted!"); // At least put a console.log here to see if it's triggered
     },
     // ... other methods (including handleSubmit if you have it)
   },
@@ -438,6 +436,31 @@ export default {
     'form.tel_num_off'(value) {
       this.form.tel_num_off = value.replace(/[^0-9]/g, "").slice(0, 10);
     },
+    async submitForm() {  
+    const { data, error } = await supabase
+      .from('clients')  // Insert into 'clients' table
+      .insert([
+        {
+          LastName: this.form.last_name,
+          GivenName: this.form.given_name,
+          MiddleName: this.form.middle_name,
+          DateOfBirth: this.form.date_of_birth,
+          InterestOnProperty: this.form.interest_on_property,
+          MobileNum: this.form.mobile_num,
+          EmailAdd: this.form.email_add,
+          MailingAdd: this.form.mailing_add,
+          TelResNum: this.form.tel_num_res,
+          TelOffNum: this.form.tel_num_off,
+        }
+      ]);
+
+    if (error) {
+      console.error("Error inserting data:", error.message);
+    } else {
+      console.log("Data inserted successfully:", data);
+      alert("Form submitted successfully!");
+    }
+},
     // ... other watchers
   },
 
