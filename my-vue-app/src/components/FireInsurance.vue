@@ -251,10 +251,10 @@ export default {
   data() {
     return {
         form: {
-        last_name: "",
-        given_name: "",
-        middle_name: "",
-        dob: "",
+      last_name: "",
+      given_name: "",
+      middle_name: "",
+      dob: "",
         interest_on_property: "",
         phone_num: "",
         email_add: "",
@@ -287,12 +287,22 @@ export default {
         boundaryLeft: "",
         boundaryRear: "",
       },
-      // Other UI state variables
-      isLoading: false, 
-      errorMessage: "", 
-      successMessage: "", 
-      submitted: false, 
-      };
+      constructionClasses: {
+        "Class A": [
+          "Reinforced Concrete",
+          "Concrete Hollow Blocks",
+        ],
+        "Class B": [
+          "Wood",
+          "Bamboo",
+        ],
+      },
+
+      isLoading: false,
+      errorMessage: "",
+      successMessage: "",
+      submitted: false,
+    };
       constructionClasses: {
         "Class A": [
           "Reinforced Concrete",
@@ -397,7 +407,7 @@ export default {
   mounted() {
   console.log("Component mounted!");
   this.date = `${this.currentYear}-12-31`;
-  },
+  }
 };
 </script>
 
