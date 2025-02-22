@@ -436,30 +436,135 @@ export default {
     'form.tel_num_off'(value) {
       this.form.tel_num_off = value.replace(/[^0-9]/g, "").slice(0, 10);
     },
-    async submitForm() {  
-    const { data, error } = await supabase
-      .from('clients')  // Insert into 'clients' table
+    async submitForm() {
+  console.log("Submitting form...");
+
+  try {
+    // Step 1: Insert client details into 'clients' table
+    const { data: clientData, error: clientError } = await supabase
+      .from("clients")
       .insert([
         {
-          LastName: this.form.last_name,
-          GivenName: this.form.given_name,
-          MiddleName: this.form.middle_name,
-          DateOfBirth: this.form.date_of_birth,
-          InterestOnProperty: this.form.interest_on_property,
-          MobileNum: this.form.mobile_num,
-          EmailAdd: this.form.email_add,
-          MailingAdd: this.form.mailing_add,
-          TelResNum: this.form.tel_num_res,
-          TelOffNum: this.form.tel_num_off,
+          LastName: this.form.LastName,
+          GivenName: this.form.GivenName,
+          MiddleName: this.form.MiddleName,
+          DateOfBirth: this.form.DateOfBirth,
+          InterestOnProperty: this.form.InterestOnProperty,
+          MobileNum: this.form.MobileNum,
+          EmailAdd: this.form.EmailAdd,
+          MailingAdd: this.form.MailingAdd,
+          TelResNum: this.form.TelResNum,
+          TelOffNum: this.form.TelOffNum
+        }
+      ])
+      .select(); // Retrieve inserted row
+
+    if (clientError) throw clientError;
+    console.log("Inserted client:", clientData);
+
+    // Get ClientID from the inserted client
+    const ClientID = clientData[0]?.ClientID;
+    if (!ClientID) throw new Error("ClientID not found!");
+
+    // Step 2: Insert property information into 'property_information' table
+    const { data: propertyData, error: propertyError } = await supabase
+      .from("property_information")
+      .insert([
+        {
+          ClientID: ClientID,
+          PropertyAddress: this.form.PropertyAddress,
+          PropertyCountry: "Philippines", // Fixed value as per your constraints
+          PropertyRegion: this.form.PropertyRegion,
+          PropertyProvince: this.form.PropertyProvince,
+          PropertyCity: this.form.PropertyCity,
+          PropertyBarangay: this.form.PropertyBarangay,
+          PropertyVillageName: this.form.PropertyVillageName,
+          PropertyCondoName: this.form.PropertyCondoName
+        }
+      ])
+      .select();
+
+    if (propertyError) throw propertyError;
+    console.log("Inserted property:", propertyData);
+
+    // Get PropertyID from the inserted property
+    const PropertyID = propertyData[0]?.PropertyID;
+    if (!PropertyID) throw new Error("PropertyID not found!");
+
+    // Step 3: Insert covered properties into 'covered_properties' table (if applicable)
+    const { error: coveredPropertiesError } = await supabase
+      .from("covered_properties")
+      .insert([
+        {
+          PropertyID: PropertyID,
+          BuildingImprovements: this.form.BuildingImprovements ?? 0, // Ensure default values
+          HouseholdContents: this.form.HouseholdContents ?? 0,
+          SwimmingPool: this.form.SwimmingPool ?? 0,
+          Gazebo: this.form.Gazebo ?? 0,
+          WaterTank: this.form.WaterTank ?? 0,
+          PumpHouse: this.form.PumpHouse ?? 0,
+          DirtyKitchen: this.form.DirtyKitchen ?? 0,
+          ConcreteFence: this.form.ConcreteFence ?? 0
         }
       ]);
 
-    if (error) {
-      console.error("Error inserting data:", error.message);
-    } else {
-      console.log("Data inserted successfully:", data);
-      alert("Form submitted successfully!");
+    if (coveredPropertiesError) throw coveredPropertiesError;
+    console.log("Inserted covered properties");
+
+    // Step 4: Insert property description into 'property_description' table
+    const { error: descriptionError } = await supabase
+      .from("property_description")
+      .insert([
+        {
+          PropertyID: PropertyID,
+          Storey: this.form.Storey,
+          YearBuilt: this.form.YearBuilt,
+          FloorArea: this.form.FloorArea,
+          Roofing: this.form.Roofing,
+          RoofingOther: this.form.RoofingOther,
+          Occupancy: this.form.Occupancy,
+          OccupancyOther: this.form.OccupancyOther,
+          Tenants: this.form.Tenants,
+          TypeOfConstruction: this.form.TypeOfConstruction,
+          BoundaryFront: this.form.BoundaryFront,
+          BoundaryRight: this.form.BoundaryRight,
+          BoundaryLeft: this.form.BoundaryLeft,
+          BoundaryRear: this.form.BoundaryRear,
+          LocationCongestedArea: this.form.LocationCongestedArea,
+          LocationCongestedAreaDetails: this.form.LocationCongestedAreaDetails,
+          LocationExplosives: this.form.LocationExplosives,
+          LocationExplosivesDetails: this.form.LocationExplosivesDetails,
+          LocationFloodProne: this.form.LocationFloodProne,
+          LocationFloodProneDetails: this.form.LocationFloodProneDetails,
+          FireLoss: this.form.FireLoss,
+          FireLossDate: this.form.FireLossDate || null, // Nullable field
+          PolicyCancelled: this.form.PolicyCancelled,
+          PolicyCancelledCompany: this.form.PolicyCancelledCompany || null,
+          PolicyCancelledDate: this.form.PolicyCancelledDate || null,
+          RiskDeclined: this.form.RiskDeclined,
+          RiskDeclinedCompany: this.form.RiskDeclinedCompany || null,
+          RiskDeclinedDate: this.form.RiskDeclinedDate || null
+        }
+      ]);
+
+    if (descriptionError) throw descriptionError;
+    console.log("Inserted property description");
+
+    // Step 5: Insert selected package into 'packages' table (if applicable)
+    if (this.form.PackageName) {
+      const { error: packageError } = await supabase
+        .from("packages")
+        .insert([{ PackageName: this.form.PackageName }]);
+
+      if (packageError) throw packageError;
+      console.log("Inserted package selection");
     }
+
+    alert("Form submitted successfully!");
+  } catch (error) {
+    console.error("Error:", error.message);
+    alert("Error submitting form: " + error.message);
+  }
 },
     // ... other watchers
   },
