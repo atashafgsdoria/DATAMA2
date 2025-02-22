@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import FireInsurance from '@/components/FireInsurance.vue';
+import FireInsurance from './components/FireInsurance.vue';
 
 export default {
   components: { FireInsurance }
