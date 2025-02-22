@@ -5,9 +5,10 @@
 </template>
 
 <script>
-import FormComponent from '@/components/FireInsurance.vue';
+import FireInsurance from '@/components/FireInsurance.vue';
 
 export default {
   components: { FireInsurance }
 };
 </script>
+
