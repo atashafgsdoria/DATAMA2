@@ -239,121 +239,117 @@
 </template>
 
 <script>
-    export default {
-    data() {
-      return {
-        constructionClasses: {
-          "Class A": [
-            "Reinforced Concrete",
-            "Concrete Hollow Blocks",
-            "Bricks",
-            "Stones",
-            "Sheets of Galvanized Iron",
-            "Steel",
-            "Asbestos",
-            "Aluminum",
-          ],
-          "Class B": [
-            "Concrete and Timber",
-            "Mixed Construction (More than 50% Timber)",
-          ],
-          "Class C": ["Bamboo", "Sawali", "Nipa", "Cogon", "Thatch", "Grass"],
-        },
-      };
-    },
-  };
-    export default {
-      data() {
-        return {
-          selectedPackage: "",
-          packages: {
-            "Homecare Plus 2": [
-              "Fire/Lightning",
-              "Typhoon",
-              "Flood",
-              "Extended Cover",
-              "Riot and Strike",
-              "Malicious Damage",
-              "Robbery/Burglary",
-            ],
-            "Homecare Enhance": [
-              "Fire/Lightning",
-              "Extended Cover",
-            ],
-            "Homecare Plus 1": [
-              "Fire/Lightning",
-              "Typhoon",
-              "Flood",
-              "Extended Cover",
-              "Riot and Strike",
-              "Malicious Damage",
-              "Robbery/Burglary",
-            ],
-            "Homecare Compre": [
-              "Fire/Lightning",
-              "Typhoon",
-              "Flood",
-              "Extended Cover",
-              "Riot and Strike",
-              "Malicious Damage",
-              "Robbery/Burglary",
-              "Broad Water Damage",
-              "Bowtap",
-            ],
-          },
-          phoneNumber: "",
-          telephoneNumbers: {
-            res: "",
-            off: ""
-          },
-          country: "",
-          date: "",
-          currentYear: new Date().getFullYear(),
-          additionalFields: {
-            "policy-cancelled": false,
-            "risk-declined": false,
-            "fire-loss": false,
-            "loc-congested-area": false,
-            "loc-explosive": false,
-            "loc-flood-prone": false
-          },
-          otherFields: {
-            "property-type": false
-          }
-        };
+export default {
+  data() {
+    return {
+      // Data for the first table (Construction Information)
+      constructionClasses: {
+        "Class A": [
+          "Reinforced Concrete",
+          "Concrete Hollow Blocks",
+          "Bricks",
+          "Stones",
+          "Sheets of Galvanized Iron",
+          "Steel",
+          "Asbestos",
+          "Aluminum",
+        ],
+        "Class B": [
+          "Concrete and Timber",
+          "Mixed Construction (More than 50% Timber)",
+        ],
+        "Class C": ["Bamboo", "Sawali", "Nipa", "Cogon", "Thatch", "Grass"],
       },
-      methods: {
-        toggleInput(selectId) {
-          this.$set(this.additionalFields, selectId, !this.additionalFields[selectId]);
-        },
-        toggleInfo(selectId) {
-          if (["policy-cancelled", "risk-declined"].includes(selectId)) {
-            this.$set(this.additionalFields, selectId, !this.additionalFields[selectId]);
-          }
-        },
-        toggleOtherField(field) {
-          this.$set(this.otherFields, field, !this.otherFields[field]);
-        },
-        validateCountry() {
-          if (this.country !== "Philippines") {
-            alert('Please enter "Philippines"');
-          }
-        }
+
+      // Data for the second table (Package Inclusions)
+      selectedPackage: "",
+      packages: {
+        "Homecare Plus 2": [
+          "Fire/Lightning",
+          "Typhoon",
+          "Flood",
+          "Extended Cover",
+          "Riot and Strike",
+          "Malicious Damage",
+          "Robbery/Burglary",
+        ],
+        "Homecare Enhance": ["Fire/Lightning", "Extended Cover"],
+        "Homecare Plus 1": [
+          "Fire/Lightning",
+          "Typhoon",
+          "Flood",
+          "Extended Cover",
+          "Riot and Strike",
+          "Malicious Damage",
+          "Robbery/Burglary",
+        ],
+        "Homecare Compre": [
+          "Fire/Lightning",
+          "Typhoon",
+          "Flood",
+          "Extended Cover",
+          "Riot and Strike",
+          "Malicious Damage",
+          "Robbery/Burglary",
+          "Broad Water Damage",
+          "Bowtap",
+        ],
       },
-      watch: {
-        phoneNumber(value) {
-          this.phoneNumber = value.replace(/[^0-9]/g, '').slice(0, 11);
-        },
-        telephoneNumbers: {
-          handler(value) {
-            this.telephoneNumbers.res = value.res.replace(/[^0-9]/g, '').slice(0, 10);
-            this.telephoneNumbers.off = value.off.replace(/[^0-9]/g, '').slice(0, 10);
-          },
-          deep: true
-        }
+
+      // Other fields
+      phoneNumber: "",
+      telephoneNumbers: {
+        res: "",
+        off: "",
       },
-      mounted() {
-        this.date = `${this.currentYear}-12-31`;
-      }
+      country: "",
+      date: "",
+      currentYear: new Date().getFullYear(),
+      additionalFields: {
+        "policy-cancelled": false,
+        "risk-declined": false,
+        "fire-loss": false,
+        "loc-congested-area": false,
+        "loc-explosive": false,
+        "loc-flood-prone": false,
+      },
+      otherFields: {
+        "property-type": false,
+      },
     };
-    </script>
+  },
+  methods: {
+    toggleInput(selectId) {
+      this.$set(this.additionalFields, selectId, !this.additionalFields[selectId]);
+    },
+    toggleInfo(selectId) {
+      if (["policy-cancelled", "risk-declined"].includes(selectId)) {
+        this.$set(this.additionalFields, selectId, !this.additionalFields[selectId]);
+      }
+    },
+    toggleOtherField(field) {
+      this.$set(this.otherFields, field, !this.otherFields[field]);
+    },
+    validateCountry() {
+      if (this.country !== "Philippines") {
+        alert('Please enter "Philippines"');
+      }
+    },
+  },
+  watch: {
+    phoneNumber(value) {
+      this.phoneNumber = value.replace(/[^0-9]/g, "").slice(0, 11);
+    },
+    telephoneNumbers: {
+      handler(value) {
+        this.telephoneNumbers.res = value.res.replace(/[^0-9]/g, "").slice(0, 10);
+        this.telephoneNumbers.off = value.off.replace(/[^0-9]/g, "").slice(0, 10);
+      },
+      deep: true,
+    },
+  },
+  mounted() {
+    this.date = `${this.currentYear}-12-31`;
+  },
+};
+</script>
