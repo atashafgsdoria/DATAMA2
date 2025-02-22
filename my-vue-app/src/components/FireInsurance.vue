@@ -409,4 +409,181 @@ export default {
 };
 </script>
 
+<style>
+        .section {
+            margin-top: 50px;
+            margin-bottom: 20px;
+            margin-left: 5%;
+            margin-right: 5%;
+            border: 1px solid #ccc; 
+            padding: 10px; 
+        }
+
+        h2{
+            font-size: 32px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+        }
+        h3{
+            font-size: 24px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+        }
+        p{
+            font-size: 14px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-style: italic;
+            font-weight: normal;
+            color: #04097f;
+        }
+
+        .columns {
+            display: flex;
+            gap: 20px; 
+        }
+
+        .column {
+            flex: 1; 
+        }
+
+        .columns.other-information {
+            flex-basis: 100%; 
+            margin-top: 20px; 
+        }
+
+        .section table {
+            margin: 0 auto; 
+            border-collapse: collapse; 
+            width: 900px; 
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+        }
+
+        .section th, .section td {
+            padding: 8px; 
+            border: 1px solid #ddd; 
+            text-align: left;
+        }
+
+        .section th {
+            background-color: #f2f2f2; 
+        }
+
+        .section ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px; 
+            border: 1px solid #ccc; 
+            border-radius: 5px; 
+            box-sizing: border-box; 
+            font-size: 14px; 
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        label {
+            display: block; 
+            margin-bottom: 5px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+        }
+
+        input[type="text"]::placeholder,
+        input[type="email"]::placeholder,
+        input[type="number"]::placeholder {
+            color: #aaa; 
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="number"]:focus {
+            border-color: #007bff; 
+            outline: none; 
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.2); 
+        }
+
+        input[type="text"].error,
+        input[type="email"]:focus,
+        input[type="number"].error {
+            border-color: red; 
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 14px;
+            font-family: Arial, Helvetica, sans-serif;
+            appearance: none; 
+            -webkit-appearance: none; 
+            -moz-appearance: none; 
+            background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-chevron-down' viewBox='0 0 16 16'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") no-repeat right 10px center; /* Add a dropdown arrow */
+            padding-right: 30px; 
+        }
+
+        select:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+        }
+
+      
+        input[type="radio"] {
+            margin-right: 5px; 
+            vertical-align: middle;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: normal;
+        }
+
+        input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 14px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        input[type="date"]:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+        }
+        /* Style for required fields */
+        label[for]::after { /* Use ::after pseudo-element */
+            content: " *"; /* Add asterisk */
+            color: red; /* Make it red */
+        }
+
+        /* Exceptions for specific labels (no asterisk) */
+        label[for="tel_num_res"]::after,  /* Telephone Residential */
+        label[for="tel_num_off"]::after,  /* Telephone Office */
+        label[for="middle_name"]::after, /* Middle Name */
+        label[for="village_name"]::after, /* Village Name */
+        label[for="condo_name"]::after { /* Condo Name */
+            content: ""; /* Remove asterisk for these labels */
+        }
+
+    </style>
+</head>
 
