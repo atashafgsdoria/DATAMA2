@@ -249,62 +249,45 @@
 <script>
 export default {
   data() {
-  return {
-    form: {
-      last_name: "",
-      given_name: "",
-      middle_name: "",
-      dob: "",
-      interest_on_property: "", 
-      phone_num: "",
-      email_add: "",
-      mailing_address: "",
-      tel_num_res: "",
-      tel_num_off: "",
-      address: "",
-      country: "",
-      region: "",
-      province: "",
-      city: "",
-      barangay: "",
-      village_name: "",
-      condo_name: "",
-      building_improvements: 0,
-      household_contents: 0,
-      swimming_pool: 0,
-      gazebo: 0,
-      water_tank: 0,
-      pump_house: 0,
-      dirty_kitchen: 0,
-      concrete_fence: 0,
-      noOfStorey: 1,
-      yearBuilt: "",
-      floorArea: 1,
-      roofing: "",
-      roofingOther: "",
-      boundaryFront: "",
-      boundaryRight: "",
-      boundaryLeft: "",
-      boundaryRear: "",
-    },
+    return {
+      form: {
+        last_name: "",
+        given_name: "",
+        middle_name: "",
+        dob: "",
+        interest_on_property: "", 
+        phone_num: "",
+        email_add: "",
+        mailing_address: "",
+        tel_num_res: "",
+        tel_num_off: "",
+        address: "",
+        country: "",
+        region: "",
+        province: "",
+        city: "",
+        barangay: "",
+        village_name: "",
+        condo_name: "",
+        building_improvements: 0,
+        household_contents: 0,
+        swimming_pool: 0,
+        gazebo: 0,
+        water_tank: 0,
+        pump_house: 0,
+        dirty_kitchen: 0,
+        concrete_fence: 0,
+        noOfStorey: 1,
+        yearBuilt: "",
+        floorArea: 1,
+        roofing: "",
+        roofingOther: "",
+        boundaryFront: "",
+        boundaryRight: "",
+        boundaryLeft: "",
+        boundaryRear: "",
+      },
 
-    constructionClasses: {
-      "Class A": [
-        "Reinforced Concrete",
-        "Concrete Hollow Blocks",
-      ],
-      "Class B": [
-        "Wood",
-        "Bamboo",
-      ],
-    },
-
-    isLoading: false,
-    errorMessage: "",
-    successMessage: "",
-    submitted: false,
-  };
-}
       constructionClasses: {
         "Class A": [
           "Reinforced Concrete",
@@ -322,6 +305,7 @@ export default {
         ],
         "Class C": ["Bamboo", "Sawali", "Nipa", "Cogon", "Thatch", "Grass"],
       },
+
       selectedPackage: "",
       packages: {
         "Homecare Plus 2": [
@@ -355,14 +339,17 @@ export default {
           "Bowtap",
         ],
       },
+
       phoneNumber: "",
       telephoneNumbers: {
         res: "",
         off: "",
       },
+
       country: "",
       date: "",
       currentYear: new Date().getFullYear(),
+
       additionalFields: {
         "policy-cancelled": false,
         "risk-declined": false,
@@ -371,11 +358,18 @@ export default {
         "loc-explosive": false,
         "loc-flood-prone": false,
       },
+
       otherFields: {
         "property-type": false,
       },
+
+      isLoading: false,
+      errorMessage: "",
+      successMessage: "",
+      submitted: false,
     };
   },
+  
   methods: {
     toggleInput(selectId) {
       this.$set(this.additionalFields, selectId, !this.additionalFields[selectId]);
@@ -394,6 +388,7 @@ export default {
       }
     },
   },
+
   watch: {
     phoneNumber(value) {
       this.phoneNumber = value.replace(/[^0-9]/g, "").slice(0, 11);
@@ -406,10 +401,12 @@ export default {
       deep: true,
     },
   },
+
   mounted() {
-  console.log("Component mounted!");
-  this.date = `${this.currentYear}-12-31`;
-  }
+    console.log("Component mounted!");
+    this.date = `${this.currentYear}-12-31`;
+  },
 };
 </script>
+
 
