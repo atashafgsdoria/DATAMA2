@@ -26,7 +26,7 @@
         
                 <div class="column">
                   <label for="phone_num">Mobile No.:</label>
-                  <input type="tel" id="phone_num" v-model="form.phone_num" placeholder="09000000000" pattern="[0-9]{11}" required />
+                  <input type="number" id="phone_num" v-model="form.phone_num" placeholder="09000000000" pattern="[0-9]{11}" required />
         
                   <label for="email_add">Email Address:</label>
                   <input type="email" id="email_add" v-model="form.email_add" placeholder="juandelacruz@domain.com" required />
@@ -35,10 +35,10 @@
                   <input type="text" id="mailing_address" v-model="form.mailing_address" placeholder="3 Humabon, Makati" required />
         
                   <label for="tel_num_res">Telephone No. (Residential):</label>
-                  <input type="text" id="tel_num_res" v-model="form.tel_num_res" placeholder="0288529232" pattern="[0-9]{0,10}" />
+                  <input type="number" id="tel_num_res" v-model="form.tel_num_res" placeholder="0288529232" pattern="[0-9]{0,10}" />
         
                   <label for="tel_num_off">Telephone No. (Office):</label>
-                  <input type="text" id="tel_num_off" v-model="form.tel_num_off" placeholder="0288529232" pattern="[0-9]{0,10}" />
+                  <input type="number" id="tel_num_off" v-model="form.tel_num_off" placeholder="0288529232" pattern="[0-9]{0,10}" />
                 </div>
               </div>
               <button type="submit">Submit</button>
@@ -410,13 +410,20 @@ export default {
 </script>
 
 <style>
+        body {
+        background-color: white;
+        color: black; /* Ensures text remains visible */
+        }
+
         .section {
             margin-top: 50px;
             margin-bottom: 20px;
-            margin-left: 5%;
-            margin-right: 5%;
             border: 1px solid #ccc; 
-            padding: 10px; 
+            padding: 10px;
+            background-color: white;
+            color: black;
+            border: 1px solid #ccc;
+            width: auto; 
         }
 
         h2{
@@ -487,6 +494,20 @@ export default {
             box-sizing: border-box; 
             font-size: 14px; 
             font-family: Arial, Helvetica, sans-serif;
+            background-color: white; 
+            color: black;
+        }
+        input[type="radio"] {
+            margin-right: 5px; 
+            vertical-align: middle;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: normal;
+            color: white;
+        }
+
+        input:-webkit-autofill {
+        background-color: white !important;
+        color: black !important;
         }
 
         label {
@@ -495,6 +516,7 @@ export default {
             font-family: Arial, Helvetica, sans-serif;
             font-style: normal;
             font-weight: bold;
+            display: left;
         }
 
         input[type="text"]::placeholder,
@@ -536,6 +558,7 @@ export default {
             -webkit-appearance: none; 
             -moz-appearance: none; 
             background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-chevron-down' viewBox='0 0 16 16'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") no-repeat right 10px center; /* Add a dropdown arrow */
+            padding-right: 30px;
             padding-right: 30px; 
         }
 
@@ -545,13 +568,6 @@ export default {
             box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
         }
 
-      
-        input[type="radio"] {
-            margin-right: 5px; 
-            vertical-align: middle;
-            font-family: Arial, Helvetica, sans-serif;
-            font-weight: normal;
-        }
 
         input[type="date"] {
             width: 100%;
@@ -562,6 +578,8 @@ export default {
             box-sizing: border-box;
             font-size: 14px;
             font-family: Arial, Helvetica, sans-serif;
+            background-color: white;
+            color: black;
         }
 
         input[type="date"]:focus {
@@ -585,5 +603,3 @@ export default {
         }
 
     </style>
-</head>
-
