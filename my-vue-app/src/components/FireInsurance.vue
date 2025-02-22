@@ -248,7 +248,6 @@
 export default {
   data() {
     return {
-      // Data for the first table (Construction Information)
       constructionClasses: {
         "Class A": [
           "Reinforced Concrete",
@@ -266,8 +265,6 @@ export default {
         ],
         "Class C": ["Bamboo", "Sawali", "Nipa", "Cogon", "Thatch", "Grass"],
       },
-
-      // Data for the second table (Package Inclusions)
       selectedPackage: "",
       packages: {
         "Homecare Plus 2": [
@@ -301,8 +298,6 @@ export default {
           "Bowtap",
         ],
       },
-
-      // Other fields
       phoneNumber: "",
       telephoneNumbers: {
         res: "",
@@ -359,3 +354,4 @@ export default {
   },
 };
 </script>
+
