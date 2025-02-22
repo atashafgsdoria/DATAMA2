@@ -152,47 +152,22 @@
             <div id="construction-information">
               <h3>Construction Information</h3>
               <table>
-                <tr>
-                  <th>Class</th>
-                  <th>Materials</th>
-                </tr>
-                <tr>
-                  <td>Class A</td>
-                  <td>
-                    <ul>
-                      <li>Reinforced Concrete</li>
-                      <li>Concrete Hollow Blocks</li>
-                      <li>Bricks</li>
-                      <li>Stones</li>
-                      <li>Sheets of Galvanized Iron</li>
-                      <li>Steel</li>
-                      <li>Asbestos</li>
-                      <li>Aluminum</li>
-                    </ul>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Class B</td>
-                  <td>
-                    <ul>
-                      <li>Concrete and Timber</li>
-                      <li>Mixed Construction (More than 50% Timber)</li>
-                    </ul>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Class C</td>
-                  <td>
-                    <ul>
-                      <li>Bamboo</li>
-                      <li>Sawali</li>
-                      <li>Nipa</li>
-                      <li>Cogon</li>
-                      <li>Thatch</li>
-                      <li>Grass</li>
-                    </ul>
-                  </td>
-                </tr>
+                <thead>
+                  <tr>
+                    <th>Class</th>
+                    <th>Materials</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(materials, className) in constructionClasses" :key="className">
+                    <td>{{ className }}</td>
+                    <td>
+                      <ul>
+                        <li v-for="material in materials" :key="material">{{ material }}</li>
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
               </table>
             </div>
         
@@ -264,6 +239,29 @@
 </template>
 
 <script>
+    export default {
+    data() {
+      return {
+        constructionClasses: {
+          "Class A": [
+            "Reinforced Concrete",
+            "Concrete Hollow Blocks",
+            "Bricks",
+            "Stones",
+            "Sheets of Galvanized Iron",
+            "Steel",
+            "Asbestos",
+            "Aluminum",
+          ],
+          "Class B": [
+            "Concrete and Timber",
+            "Mixed Construction (More than 50% Timber)",
+          ],
+          "Class C": ["Bamboo", "Sawali", "Nipa", "Cogon", "Thatch", "Grass"],
+        },
+      };
+    },
+  };
     export default {
       data() {
         return {
