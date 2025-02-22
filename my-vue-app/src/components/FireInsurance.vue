@@ -110,102 +110,139 @@
               </div>
           </div>
           <div class="section">
-              <h2>Property Description</h2>
-              <p>Enter 0 if not applicable.</p>
-              <div class="columns">
+            <h2>Property Description</h2>
+            <p>Enter 0 if not applicable.</p>
+            <div class="columns">
+              <div class="column">
+                <label for="no-of-storey">No. of Storey:</label>
+                <input type="number" id="no-of-storey" v-model="form.noOfStorey" min="1" required />
+
+                <label for="year-built">Year Built:</label>
+                <input type="number" id="year-built" v-model="form.yearBuilt" max="2025" required />
+
+                <label for="floor-area">Floor Area (sq. meters):</label>
+                <input type="number" id="floor-area" v-model="form.floorArea" min="1" required />
+
+                <label for="roofing">Roofing:</label>
+                <select id="roofing" v-model="form.roofing">
+                  <option value="galvanized-iron">Galvanized Iron</option>
+                  <option value="asbestos">Asbestos</option>
+                  <option value="brick">Brick</option>
+                  <option value="concrete">Concrete</option>
+                  <option value="other">Other (please specify)</option>
+                </select>
+                <input v-if="form.roofing === 'other'" type="text" v-model="form.roofingOther" placeholder="Specify if other" />
+              </div>
+
+              <div class="column other-information">
+                <label><b>Boundaries:</b></label><br>
                 <div class="column">
-                  <label for="no-of-storey">No. of Storey:</label>
-                  <input type="number" id="no-of-storey" v-model="form.noOfStorey" min="1" required />
-          
-                  <label for="year-built">Year Built:</label>
-                  <input type="number" id="year-built" v-model="form.yearBuilt" max="2025" required />
-          
-                  <label for="floor-area">Floor Area (sq. meters):</label>
-                  <input type="number" id="floor-area" v-model="form.floorArea" min="1" required />
-          
-                  <label for="roofing">Roofing:</label>
-                  <select id="roofing" v-model="form.roofing">
-                    <option value="galvanized-iron">Galvanized Iron</option>
-                    <option value="asbestos">Asbestos</option>
-                    <option value="brick">Brick</option>
-                    <option value="concrete">Concrete</option>
-                    <option value="other">Other (please specify)</option>
-                  </select>
-                  <input v-if="form.roofing === 'other'" type="text" v-model="form.roofingOther" placeholder="Specify if other" />
-                </div>
-          
-                <div class="column other-information">
-                  <label><b>Boundaries:</b></label>
                   <label for="boundary-front">Front:</label>
                   <input type="number" id="boundary-front" v-model="form.boundaryFront" required />
-          
+                </div>
+                <div class="column">
                   <label for="boundary-right">Right:</label>
                   <input type="number" id="boundary-right" v-model="form.boundaryRight" required />
-          
+                </div>
+                <div class="column">
                   <label for="boundary-left">Left:</label>
                   <input type="number" id="boundary-left" v-model="form.boundaryLeft" required />
-          
+                </div>
+                <div class="column">
                   <label for="boundary-rear">Rear:</label>
                   <input type="number" id="boundary-rear" v-model="form.boundaryRear" required />
                 </div>
               </div>
-              
-              <div id="construction-information">
-                <h3>Construction Information</h3>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Class</th>
-                      <th>Materials</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(materials, className) in constructionClasses" :key="className">
-                      <td>{{ className }}</td>
-                      <td>
-                        <ul>
-                          <li v-for="material in materials" :key="material">{{ material }}</li>
-                        </ul>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-          
-              <div class="column other-information">
-                <label><b>Other Property Information:</b></label><br><br>
-                <label for="loc-congested-area">Is the property located in a congested area?</label>
-                <select id="loc-congested-area" name="loc-congested-area" required>
-                  <option value="yes">Yes</option>
-                  <option value="no">No</option>
-                </select><br><br>
-                <label for="loc-explosive">Does the property have explosives?</label>
-                <select id="loc-explosive" name="loc-explosive" required>
-                  <option value="yes">Yes</option>
-                  <option value="no">No</option>
-                </select><br><br>
-                <label for="loc-flood-prone">Is the property located in a flood-prone area?</label>
-                <select id="loc-flood-prone" name="loc-flood-prone" required>
-                  <option value="yes">Yes</option>
-                  <option value="no">No</option>
-                </select><br><br>
-                <label for="fire-loss">Have you ever had a fire loss in this premises?</label>
-                <select id="fire-loss" name="fire-loss" required>
-                  <option value="yes">Yes</option>
-                  <option value="no">No</option>
-                </select><br><br>
-                <label for="policy-cancelled">Have you ever had a policy of fire insurance cancelled?</label>
-                <select id="policy-cancelled" name="policy-cancelled" required>
-                  <option value="no">No</option>
-                  <option value="yes">Yes</option>
-                </select><br><br>
-                <label for="risk-declined">Have you ever had this risk declined by any other company?</label>
-                <select id="risk-declined" name="risk-declined" required>
-                  <option value="no">No</option>
-                  <option value="yes">Yes</option>
-                </select><br><br>
-              </div>
             </div>
+
+            <div id="construction-information">
+              <h3>Construction Information</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Class</th>
+                    <th>Materials</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(materials, className) in constructionClasses":key="className">
+                    <td>{{ className }}</td>
+                    <td>
+                      <ul>
+                        <li v-for="material in materials":key="material">{{ material }}</li>
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="column other-information">
+              <label><b>Other Property Information:</b></label><br><br>
+
+              <label for="loc-congested-area">Is the property located in a congested area?</label>
+              <select id="loc-congested-area" v-model="form.loc_congested_area" required @change="toggleInfo('loc-congested-area')">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select><br><br>
+              <div v-if="showInfo.loc_congested_area">
+                <label for="loc-congested-area-details">Please provide details:</label>
+                <input type="text" id="loc-congested-area-details" v-model="form.loc_congested_area_details"><br><br>
+              </div>
+
+              <label for="loc-explosive">Does the property have explosives?</label>
+              <select id="loc-explosive" v-model="form.loc_explosive" required @change="toggleInfo('loc-explosive')">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select><br><br>
+              <div v-if="showInfo.loc_explosive">
+                <label for="loc-explosive-details">Please provide details:</label>
+                <input type="text" id="loc-explosive-details" v-model="form.loc_explosive_details"><br><br>
+              </div>
+
+              <label for="loc-flood-prone">Is the property located in a flood-prone area?</label>
+              <select id="loc-flood-prone" v-model="form.loc_flood_prone" required @change="toggleInfo('loc-flood-prone')">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select><br><br>
+              <div v-if="showInfo.loc_flood_prone">
+                <label for="loc-flood-prone-details">Please provide details:</label>
+                <input type="text" id="loc-flood-prone-details" v-model="form.loc_flood_prone_details"><br><br>
+              </div>
+
+              <label for="fire-loss">Have you ever had a fire loss in this premises?</label>
+          <select id="fire-loss" v-model="form.fire_loss" required>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select><br><br>
+          <div v-if="form.fire_loss === 'yes'">
+            <label for="fire-loss-date">When? (Date):</label>
+            <input type="date" id="fire-loss-date" v-model="form.fire_loss_date"><br><br>
+          </div>
+
+          <label for="policy-cancelled">Have you ever had a policy of fire insurance cancelled?</label>
+          <select id="policy-cancelled" v-model="form.policy_cancelled" required>
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+          </select><br><br>
+          <div v-if="form.policy_cancelled === 'yes'">
+            <input type="text" id="policy-cancelled-company" v-model="form.policy_cancelled_company" placeholder="If yes, specify company" required>
+            <label for="policy-cancelled-date">When? (Date):</label>
+            <input type="date" id="policy-cancelled-date" v-model="form.policy_cancelled_date"><br><br>
+          </div>
+
+          <label for="risk-declined">Have you ever had this risk declined by any other company?</label>
+          <select id="risk-declined" v-model="form.risk_declined" required>
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+          </select><br><br>
+          <div v-if="form.risk_declined === 'yes'">
+            <input type="text" id="risk-declined-company" v-model="form.risk_declined_company" placeholder="If yes, specify company" required>
+            <label for="risk-declined-date">When? (Date):</label>
+            <input type="date" id="risk-declined-date" v-model="form.risk_declined_date"><br><br>
+          </div>
+            </div>
+          </div>
             <div class="section">
               <h2>Offered Packages</h2>
               <label for="package">Select a Package:</label>
@@ -255,7 +292,7 @@ export default {
         given_name: "",
         middle_name: "",
         dob: "",
-        interest_on_property: "", 
+        interest_on_property: "",
         phone_num: "",
         email_add: "",
         mailing_address: "",
@@ -286,26 +323,23 @@ export default {
         boundaryRight: "",
         boundaryLeft: "",
         boundaryRear: "",
+        loc_congested_area: "",
+        loc_congested_area_details: "",
+        loc_explosive: "",
+        loc_explosive_details: "",
+        loc_flood_prone: "",
+        loc_flood_prone_details: "",
+        fire_loss: "",
+        fire_loss_date: "",
+        policy_cancelled: "",
+        policy_cancelled_company: "",
+        policy_cancelled_date: "",
+        risk_declined: "",
+        risk_declined_company: "",
+        risk_declined_date: "",
       },
 
-      constructionClasses: {
-        "Class A": [
-          "Reinforced Concrete",
-          "Concrete Hollow Blocks",
-          "Bricks",
-          "Stones",
-          "Sheets of Galvanized Iron",
-          "Steel",
-          "Asbestos",
-          "Aluminum",
-        ],
-        "Class B": [
-          "Concrete and Timber",
-          "Mixed Construction (More than 50% Timber)",
-        ],
-        "Class C": ["Bamboo", "Sawali", "Nipa", "Cogon", "Thatch", "Grass"],
-      },
-
+      constructionClasses: { /* ... */ }, // Keep your constructionClasses
       selectedPackage: "",
       packages: {
         "Homecare Plus 2": [
@@ -350,17 +384,15 @@ export default {
       date: "",
       currentYear: new Date().getFullYear(),
 
-      additionalFields: {
-        "policy-cancelled": false,
-        "risk-declined": false,
-        "fire-loss": false,
-        "loc-congested-area": false,
-        "loc-explosive": false,
-        "loc-flood-prone": false,
+      showInfo: {
+        loc_congested_area: false,
+        loc_explosive: false,
+        loc_flood_prone: false,
       },
-
-      otherFields: {
-        "property-type": false,
+      showInput: {
+        fire_loss: false,
+        policy_cancelled: false,
+        risk_declined: false,
       },
 
       isLoading: false,
@@ -369,237 +401,287 @@ export default {
       submitted: false,
     };
   },
-  
+
   methods: {
-    toggleInput(selectId) {
-      this.$set(this.additionalFields, selectId, !this.additionalFields[selectId]);
-    },
-    toggleInfo(selectId) {
-      if (["policy-cancelled", "risk-declined"].includes(selectId)) {
-        this.$set(this.additionalFields, selectId, !this.additionalFields[selectId]);
+    toggleInfo(field) {
+      this.$set(this.showInfo, field, this.form[field] === 'yes');
+      if (this.form[field] !== 'yes') {
+        this.form[field + '_details'] = '';
       }
     },
-    toggleOtherField(field) {
-      this.$set(this.otherFields, field, !this.otherFields[field]);
+    toggleInput(field) {
+      this.$set(this.showInput, field, this.form[field] === 'yes');
+      if (this.form[field] !== 'yes') {
+        this.form[field + '_date'] = '';
+        if (['policy_cancelled', 'risk_declined'].includes(field)) {
+          this.form[field + '_company'] = '';
+        }
+      }
     },
     validateCountry() {
       if (this.country !== "Philippines") {
         alert('Please enter "Philippines"');
+        this.country = ""; //Clear the input if not Philippines
+        this.form.country = "";
       }
     },
+    // ... other methods (including handleSubmit if you have it)
   },
 
   watch: {
-    phoneNumber(value) {
-      this.phoneNumber = value.replace(/[^0-9]/g, "").slice(0, 11);
+    'form.phone_num'(value) {
+      this.form.phone_num = value.replace(/[^0-9]/g, "").slice(0, 11);
     },
-    telephoneNumbers: {
-      handler(value) {
-        this.telephoneNumbers.res = value.res.replace(/[^0-9]/g, "").slice(0, 10);
-        this.telephoneNumbers.off = value.off.replace(/[^0-9]/g, "").slice(0, 10);
-      },
-      deep: true,
+    'form.tel_num_res'(value) {
+      this.form.tel_num_res = value.replace(/[^0-9]/g, "").slice(0, 10);
     },
+    'form.tel_num_off'(value) {
+      this.form.tel_num_off = value.replace(/[^0-9]/g, "").slice(0, 10);
+    },
+    // ... other watchers
   },
 
   mounted() {
-    console.log("Component mounted!");
-    this.date = `${this.currentYear}-12-31`;
+    this.form.yearBuilt = new Date().getFullYear();
+    this.date = `${this.currentYear}-12-31`; // If you are using this.date elsewhere
   },
 };
 </script>
 
 <style>
-        body {
-        background-color: white;
-        color: black; /* Ensures text remains visible */
-        }
 
-        .section {
-            margin-top: 50px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc; 
-            padding: 10px;
-            background-color: white;
-            color: black;
-            border: 1px solid #ccc;
-            width: auto; 
-        }
+body { /* or a container element if you don't want to affect the whole body */
+    background-color: white; /* Set background to white */
+    color: black; /* Set default text color to black */
+}
 
-        h2{
-            font-size: 32px;
-            font-family: Arial, Helvetica, sans-serif;
-            font-style: normal;
-            font-weight: bold;
-        }
-        h3{
-            font-size: 24px;
-            font-family: Arial, Helvetica, sans-serif;
-            font-style: normal;
-            font-weight: bold;
-        }
-        p{
-            font-size: 14px;
-            font-family: Arial, Helvetica, sans-serif;
-            font-style: italic;
-            font-weight: normal;
-            color: #04097f;
-        }
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="date"],
+select {
+    background-color: white; /* Ensure inputs have white background */
+    color: black; /* Input text color to black */
+}
 
-        .columns {
-            display: flex;
-            gap: 20px; 
-        }
+/* If you have any elements with a specific background color that you want to keep,
+   you'll need to override these rules with more specific selectors.  For example: */
+.section {
+    margin-top: 50px;
+    margin-bottom: 20px;
+    margin-left: 5%;
+    margin-right: 5%;
+    border: 1px solid #ccc; 
+    padding: 10px;
+    width: auto;
+    background-color: #f8f8f8; /* Example: Keep a light gray background for sections */
+}
 
-        .column {
-            flex: 1; 
-        }
+.section th {
+    background-color: #f2f2f2; /* Example: Keep a different background for table headers */
+}
 
-        .columns.other-information {
-            flex-basis: 100%; 
-            margin-top: 20px; 
-        }
+/* General Styles */
+.section {
+    margin-top: 50px;
+    margin-bottom: 20px;
+    margin-left: 5%;
+    margin-right: 5%;
+    border: 1px solid #ccc;
+    padding: 10px;
+    max-width: 960px; /* Added max-width for responsiveness */
+    margin-left: auto;
+    margin-right: auto; /* Center the section */
+}
 
-        .section table {
-            margin: 0 auto; 
-            border-collapse: collapse; 
-            width: 900px; 
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 14px;
-        }
+h2 {
+    font-size: 32px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+}
 
-        .section th, .section td {
-            padding: 8px; 
-            border: 1px solid #ddd; 
-            text-align: left;
-        }
+h3 {
+    font-size: 24px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+}
 
-        .section th {
-            background-color: #f2f2f2; 
-        }
+p {
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: italic;
+    font-weight: normal;
+    color: #04097f;
+}
 
-        .section ul {
-            list-style-type: disc;
-            margin-left: 20px;
-        }
+.columns {
+    display: flex;
+    flex-wrap: wrap; /* Added flex-wrap for responsiveness */
+    gap: 20px;
+}
 
-        input[type="text"],
-        input[type="email"],
-        input[type="number"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px; 
-            border: 1px solid #ccc; 
-            border-radius: 5px; 
-            box-sizing: border-box; 
-            font-size: 14px; 
-            font-family: Arial, Helvetica, sans-serif;
-            background-color: white; 
-            color: black;
-        }
-        input[type="radio"] {
-            margin-right: 5px; 
-            vertical-align: middle;
-            font-family: Arial, Helvetica, sans-serif;
-            font-weight: normal;
-            color: white;
-        }
+.column {
+    flex: 1;
+    min-width: 300px; /* Added min-width for responsiveness */
+}
 
-        input:-webkit-autofill {
-        background-color: white !important;
-        color: black !important;
-        }
+.other-information { /* Removed .columns prefix */
+    flex-basis: 100%;
+    margin-top: 20px;
+}
 
-        label {
-            display: block; 
-            margin-bottom: 5px;
-            font-family: Arial, Helvetica, sans-serif;
-            font-style: normal;
-            font-weight: bold;
-            display: left;
-        }
+.section table {
+    width: 100%; /* Changed to 100% for responsiveness */
+    border-collapse: collapse;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    margin-top: 20px; /* Added margin for better spacing */
+}
 
-        input[type="text"]::placeholder,
-        input[type="email"]::placeholder,
-        input[type="number"]::placeholder {
-            color: #aaa; 
-        }
+.section th,
+.section td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
 
-        input[type="text"]:focus,
-        input[type="email"]:focus,
-        input[type="number"]:focus {
-            border-color: #007bff; 
-            outline: none; 
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.2); 
-        }
+.section th {
+    background-color: #f2f2f2;
+}
 
-        input[type="text"].error,
-        input[type="email"]:focus,
-        input[type="number"].error {
-            border-color: red; 
-        }
+.section ul {
+    list-style-type: disc;
+    margin-left: 20px;
+}
 
-        input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
+/* Form Element Styles */
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="date"],
+select { /* Added select and date input */
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+}
 
-        select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-            font-size: 14px;
-            font-family: Arial, Helvetica, sans-serif;
-            appearance: none; 
-            -webkit-appearance: none; 
-            -moz-appearance: none; 
-            background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-chevron-down' viewBox='0 0 16 16'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") no-repeat right 10px center; /* Add a dropdown arrow */
-            padding-right: 30px;
-            padding-right: 30px; 
-        }
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+}
 
-        select:focus {
-            border-color: #007bff;
-            outline: none;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
-        }
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="number"]::placeholder,
+input[type="date"]::placeholder,
+select { /* Added select and date input */
+    color: #aaa;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+select:focus { /* Added select and date input */
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+}
+
+input[type="text"].error,
+input[type="email"].error, /* Corrected to .error */
+input[type="number"].error,
+input[type="date"].error {
+    border-color: red;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-chevron-down' viewBox='0 0 16 16'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") no-repeat right 10px center;
+    padding-right: 30px;
+}
+input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid #000; /* Black border by default */
+    background-color: #fff; /* White background by default */
+    margin-right: 8px;
+    vertical-align: middle;
+    cursor: pointer;
+    position: relative;
+    transition: border-color 0.2s ease, background-color 0.2s ease; /* Smooth transitions */
+}
+
+input[type="radio"]:checked {
+    border-color: #000; /* Blue border when checked */
+    background-color: #000; /* Keep the white background */
+}
 
 
-        input[type="date"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-            font-size: 14px;
-            font-family: Arial, Helvetica, sans-serif;
-            background-color: white;
-            color: black;
-        }
+/* Style for required fields */
+label[for]::after {
+    content: " *";
+    color: red;
+}
 
-        input[type="date"]:focus {
-            border-color: #007bff;
-            outline: none;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
-        }
-        /* Style for required fields */
-        label[for]::after { /* Use ::after pseudo-element */
-            content: " *"; /* Add asterisk */
-            color: red; /* Make it red */
-        }
+/* Exceptions for specific labels (no asterisk) */
+label[for="tel_num_res"]::after,
+label[for="tel_num_off"]::after,
+label[for="middle_name"]::after,
+label[for="village_name"]::after,
+label[for="condo_name"]::after {
+    content: "";
+}
 
-        /* Exceptions for specific labels (no asterisk) */
-        label[for="tel_num_res"]::after,  /* Telephone Residential */
-        label[for="tel_num_off"]::after,  /* Telephone Office */
-        label[for="middle_name"]::after, /* Middle Name */
-        label[for="village_name"]::after, /* Village Name */
-        label[for="condo_name"]::after { /* Condo Name */
-            content: ""; /* Remove asterisk for these labels */
-        }
+/* Added styles for buttons */
+button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-top: 20px; /* Add some top margin */
+}
 
-    </style>
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+button[type="submit"]:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+select {
+    /* ... other styles ... */
+    color: black; /* Text color for the dropdown */
+}
+
+select option {
+    color: black; /* Text color for the options in the dropdown */
+}
+
+</style>
