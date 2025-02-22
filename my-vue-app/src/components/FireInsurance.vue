@@ -218,18 +218,24 @@
             <div id="package-inclusions" v-if="selectedPackage">
               <h3>Package Inclusions</h3>
               <table>
-                <tr>
-                  <th>Package</th>
-                  <th>Inclusions</th>
-                </tr>
-                <tr>
-                  <td>{{ selectedPackage }}</td>
-                  <td>
-                    <ul>
-                      <li v-for="item in packages[selectedPackage]" :key="item">{{ item }}</li>
-                    </ul>
-                  </td>
-                </tr>
+                <thead>
+                  <tr>
+                    <th>Package</th>
+                    <th>Inclusions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{ selectedPackage }}</td>
+                    <td>
+                      <ul>
+                        <li v-for="item in packages[selectedPackage]" :key="item">
+                          {{ item }}
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
               </table>
             </div>
             <br /><br />
