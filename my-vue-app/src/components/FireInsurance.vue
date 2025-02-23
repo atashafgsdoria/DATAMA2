@@ -153,7 +153,7 @@
 
             <div id="construction-information">
               <h3>Construction Information</h3>
-              <table>
+              <table class="border-collapse border border-gray-400 w-full">
                 <thead>
                   <tr>
                     <th>Class</th>
@@ -161,11 +161,11 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(materials, className) in constructionClasses":key="className">
-                    <td>{{ className }}</td>
+                  <tr>
+                    <td>{{ item.class }}</td>
                     <td>
                       <ul>
-                        <li v-for="material in materials":key="material">{{ material }}</li>
+                        <li v-for="(material, i) in item.materials" :key="i">{{ material }}</li>
                       </ul>
                     </td>
                   </tr>
@@ -285,7 +285,7 @@ import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const supabase = createClient('https://yebzeglvqfxiiwzijmmr.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InllYnplZ2x2cWZ4aWl3emlqbW1yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAyMTM3NjEsImV4cCI6MjA1NTc4OTc2MX0.6MQl_8jO7EyCxewwvV4RancZ4cX_B5IGEfcPbjF8a5E');
+const supabase = createClient('https://fovovrngawjoknwmlpna.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZvdm92cm5nYXdqb2tud21scG5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAyOTE1NDYsImV4cCI6MjA1NTg2NzU0Nn0.UHs7uDyK54mdxjy7B9NOS6jNLjohZdDCDOQc547WTKo');
 
 console.log("Supabase Initialized:", supabase);
 
@@ -319,7 +319,7 @@ export default {
         dirty_kitchen: 0,
         concrete_fence: 0,
         noOfStorey: 1,
-        yearBuilt: "",
+        yearBuilt: new Date().getFullYear(),
         floorArea: 1,
         roofing: "",
         roofingOther: "",
@@ -343,7 +343,49 @@ export default {
         risk_declined_date: "",
       },
 
-      constructionClasses: { /* ... */ }, // Keep your constructionClasses
+      insuranceData: [
+        {
+          class: "Class A",
+          materials: [
+            "Reinforced Concrete",
+            "Concrete Hollow Blocks",
+            "Bricks",
+            "Stones",
+            "Sheets of Galvanized Iron",
+            "with CHB zocalo wall",
+            "Steel",
+            "Asbestos",
+            "Aluminum",
+            "Open-sided structures with solid or hard roof with concrete post",
+          ],
+        },
+        {
+          class: "Class B",
+          materials: [
+            "Concrete and Timber",
+            "Entirely of timber or timber products or mixed construction or more than 50% timber of the total external wall area",
+          ],
+        },
+        {
+          class: "Class C",
+          materials: ["Bamboo", "Sawali", "Nipa", "Cogon", "Thatch", "Grass"],
+        },
+        {
+          class: "Homecare Compre",
+          materials: [
+            "Fire/Lightning",
+            "Typhoon",
+            "Flood",
+            "Extended Cover",
+            "Riot and Strike",
+            "Malicious Damage",
+            "Robbery/Burglary",
+            "Broad Water Damage",
+            "Bowtap",
+          ],
+        },
+      ],
+
       selectedPackage: "",
       packages: {
         "Homecare Plus 2": [
@@ -378,15 +420,6 @@ export default {
         ],
       },
 
-      phoneNumber: "",
-      telephoneNumbers: {
-        res: "",
-        off: "",
-      },
-
-      date: "",
-      currentYear: new Date().getFullYear(),
-
       showInfo: {
         loc_congested_area: false,
         loc_explosive: false,
@@ -407,180 +440,40 @@ export default {
 
   methods: {
     toggleInfo(field) {
-      this.$set(this.showInfo, field, this.form[field] === 'yes');
-      if (this.form[field] !== 'yes') {
-        this.form[field + '_details'] = '';
+      this.$set(this.showInfo, field, this.form[field] === "yes");
+      if (this.form[field] !== "yes") {
+        this.form[field + "_details"] = "";
       }
     },
     toggleInput(field) {
-      this.$set(this.showInput, field, this.form[field] === 'yes');
-      if (this.form[field] !== 'yes') {
-        this.form[field + '_date'] = '';
-        if (['policy_cancelled', 'risk_declined'].includes(field)) {
-          this.form[field + '_company'] = '';
+      this.$set(this.showInput, field, this.form[field] === "yes");
+      if (this.form[field] !== "yes") {
+        this.form[field + "_date"] = "";
+        if (["policy_cancelled", "risk_declined"].includes(field)) {
+          this.form[field + "_company"] = "";
         }
       }
     },
-    handleSubmit(event) {  // Add 'event' parameter if you need it
-      event.preventDefault(); // Prevent default form submission (important!)
-      // ... your form submission logic here ...
-      console.log("Form submitted!"); // At least put a console.log here to see if it's triggered
+    handleSubmit(event) {
+      event.preventDefault();
+      console.log("Form submitted!");
     },
-    // ... other methods (including handleSubmit if you have it)
   },
 
   watch: {
-    'form.phone_num'(value) {
+    "form.phone_num"(value) {
       this.form.phone_num = value.replace(/[^0-9]/g, "").slice(0, 11);
     },
-    'form.tel_num_res'(value) {
+    "form.tel_num_res"(value) {
       this.form.tel_num_res = value.replace(/[^0-9]/g, "").slice(0, 10);
     },
-    'form.tel_num_off'(value) {
+    "form.tel_num_off"(value) {
       this.form.tel_num_off = value.replace(/[^0-9]/g, "").slice(0, 10);
     },
-    async submitForm() {
-  console.log("Submitting form...");
-
-  try {
-    this.isLoading = true;
-    this.errorMessage = "";
-    this.successMessage = "";
-
-    // Step 1: Insert into `clients` table
-    const { data: clientData, error: clientError } = await supabase
-      .from("clients")
-      .insert([
-        {
-          LastName: this.form.last_name,
-          GivenName: this.form.given_name,
-          MiddleName: this.form.middle_name,
-          DateOfBirth: this.form.dob,
-          InterestOnProperty: this.form.interest_on_property,
-          MobileNum: this.form.phone_num,
-          EmailAdd: this.form.email_add,
-          MailingAdd: this.form.mailing_address,
-          TelResNum: this.form.tel_num_res || null,
-          TelOffNum: this.form.tel_num_off || null,
-        },
-      ])
-      .select();
-
-    if (clientError) throw clientError;
-    console.log("Inserted client:", clientData);
-
-    const ClientID = clientData[0]?.ClientID;
-    if (!ClientID) throw new Error("ClientID not found!");
-
-    // Step 2: Insert into `property_information`
-    const { data: propertyData, error: propertyError } = await supabase
-      .from("property_information")
-      .insert([
-        {
-          ClientID,
-          PropertyAddress: this.form.address,
-          PropertyCountry: "Philippines",
-          PropertyRegion: this.form.region,
-          PropertyProvince: this.form.province,
-          PropertyCity: this.form.city,
-          PropertyBarangay: this.form.barangay,
-          PropertyVillageName: this.form.village_name || null,
-          PropertyCondoName: this.form.condo_name || null,
-        },
-      ])
-      .select();
-
-    if (propertyError) throw propertyError;
-    console.log("Inserted property:", propertyData);
-
-    const PropertyID = propertyData[0]?.PropertyID;
-    if (!PropertyID) throw new Error("PropertyID not found!");
-
-    // Step 3: Insert into `covered_properties`
-    const { error: coveredError } = await supabase
-      .from("covered_properties")
-      .insert([
-        {
-          PropertyID,
-          BuildingImprovements: this.form.building_improvements ?? 0,
-          HouseholdContents: this.form.household_contents ?? 0,
-          SwimmingPool: this.form.swimming_pool ?? 0,
-          Gazebo: this.form.gazebo ?? 0,
-          WaterTank: this.form.water_tank ?? 0,
-          PumpHouse: this.form.pump_house ?? 0,
-          DirtyKitchen: this.form.dirty_kitchen ?? 0,
-          ConcreteFence: this.form.concrete_fence ?? 0,
-        },
-      ]);
-
-    if (coveredError) throw coveredError;
-    console.log("Inserted covered properties");
-
-    // Step 4: Insert into `property_description`
-    const { error: descriptionError } = await supabase
-      .from("property_description")
-      .insert([
-        {
-          PropertyID,
-          Storey: this.form.noOfStorey,
-          YearBuilt: this.form.yearBuilt,
-          FloorArea: this.form.floorArea,
-          Roofing: this.form.roofing,
-          RoofingOther: this.form.roofingOther || null,
-          Occupancy: this.form.occupancy,
-          OccupancyOther: this.form.occupancy_other || null,
-          Tenants: this.form.tenants,
-          TypeOfConstruction: this.form.typeOfConstruction,
-          BoundaryFront: this.form.boundaryFront,
-          BoundaryRight: this.form.boundaryRight,
-          BoundaryLeft: this.form.boundaryLeft,
-          BoundaryRear: this.form.boundaryRear,
-          LocationCongestedArea: this.form.loc_congested_area,
-          LocationCongestedAreaDetails: this.form.loc_congested_area_details || null,
-          LocationExplosives: this.form.loc_explosive,
-          LocationExplosivesDetails: this.form.loc_explosive_details || null,
-          LocationFloodProne: this.form.loc_flood_prone,
-          LocationFloodProneDetails: this.form.loc_flood_prone_details || null,
-          FireLoss: this.form.fire_loss,
-          FireLossDate: this.form.fire_loss_date || null,
-          PolicyCancelled: this.form.policy_cancelled,
-          PolicyCancelledCompany: this.form.policy_cancelled_company || null,
-          PolicyCancelledDate: this.form.policy_cancelled_date || null,
-          RiskDeclined: this.form.risk_declined,
-          RiskDeclinedCompany: this.form.risk_declined_company || null,
-          RiskDeclinedDate: this.form.risk_declined_date || null,
-        },
-      ]);
-
-    if (descriptionError) throw descriptionError;
-    console.log("Inserted property description");
-
-    // Step 5: Insert into `packages` if selected
-    if (this.selectedPackage) {
-      const { error: packageError } = await supabase
-        .from("packages")
-        .insert([{ PackageName: this.selectedPackage }]);
-
-      if (packageError) throw packageError;
-      console.log("Inserted package selection:", this.selectedPackage);
-    }
-
-    this.successMessage = "Form submitted successfully!";
-    console.log("Form submitted successfully!");
-
-  } catch (error) {
-    console.error("Error submitting form:", error.message);
-    this.errorMessage = "Error: " + error.message;
-  } finally {
-    this.isLoading = false;
-  }
-},
-    // ... other watchers
   },
 
   mounted() {
-    this.form.yearBuilt = new Date().getFullYear();
-    this.date = `${this.currentYear}-12-31`; // If you are using this.date elsewhere
+    this.date = `${this.form.yearBuilt}-12-31`;
   },
 };
 </script>
